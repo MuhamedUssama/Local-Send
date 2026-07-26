@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import '../../../core/l10n/app_localizations.dart';
 
 class OnBoardingHeader extends StatelessWidget {
   final VoidCallback onSkip;
@@ -15,6 +16,7 @@ class OnBoardingHeader extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return FadeInDown(
       duration: const Duration(milliseconds: 500),
@@ -53,7 +55,7 @@ class OnBoardingHeader extends StatelessWidget {
             TextButton(
               onPressed: onSkip,
               child: Text(
-                'Skip',
+                l10n.skip,
                 style: textTheme.labelLarge?.copyWith(
                   color: colorScheme.primary,
                   fontWeight: FontWeight.w600,

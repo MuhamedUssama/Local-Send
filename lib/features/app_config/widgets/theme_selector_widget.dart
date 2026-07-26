@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import 'package:local_send/features/app_config/cubit/app_config_cubit.dart';
+import 'package:local_send/features/app_config/cubit/app_config_states.dart';
+import '../../../core/l10n/app_localizations.dart';
 
-class ThemeSelectorWidget extends StatefulWidget {
+class ThemeSelectorWidget extends StatelessWidget {
   const ThemeSelectorWidget({super.key});
-
-  @override
-  State<ThemeSelectorWidget> createState() => _ThemeSelectorWidgetState();
-}
-
-class _ThemeSelectorWidgetState extends State<ThemeSelectorWidget> {
-  // Local UI state for demonstration (user will hook logic later)
-  bool _isDark = true;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Theme',
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
+          l10n.themeLabel,
+          style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         Container(
           padding: const EdgeInsets.all(4),
@@ -33,31 +28,33 @@ class _ThemeSelectorWidgetState extends State<ThemeSelectorWidget> {
             color: colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(14),
           ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildThemeOption(
-                icon: IconsaxPlusBold.sun_1,
-                isSelected: !_isDark,
-                onTap: () {
-                  setState(() {
-                    _isDark = false;
-                  });
-                },
-                colorScheme: colorScheme,
-              ),
-              const SizedBox(width: 4),
-              _buildThemeOption(
-                icon: IconsaxPlusBold.moon,
-                isSelected: _isDark,
-                onTap: () {
-                  setState(() {
-                    _isDark = true;
-                  });
-                },
-                colorScheme: colorScheme,
-              ),
-            ],
+          child: BlocBuilder<AppConfigCubit, AppConfigStates>(
+            builder: (context, state) {
+              final cubit = context.read<AppConfigCubit>();
+
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildThemeOption(
+                    icon: IconsaxPlusBold.sun_1,
+                    isSelected: !cubit.isDark,
+                    onTap: () {
+                      cubit.changeTheme(ThemeMode.light);
+                    },
+                    colorScheme: colorScheme,
+                  ),
+                  const SizedBox(width: 4),
+                  _buildThemeOption(
+                    icon: IconsaxPlusBold.moon,
+                    isSelected: cubit.isDark,
+                    onTap: () {
+                      cubit.changeTheme(ThemeMode.dark);
+                    },
+                    colorScheme: colorScheme,
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ],

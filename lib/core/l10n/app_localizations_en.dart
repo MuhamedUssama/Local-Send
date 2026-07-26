@@ -195,4 +195,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generateQrSubtitle => 'Allow nearby mobile camera scan';
+
+  @override
+  String get personalizeTitle => 'Personalize Your Experience';
+
+  @override
+  String get personalizeSubtitle =>
+      'Choose your preferred theme and language to get started with a comfortable, tailored experience that suits your style.';
+
+  @override
+  String get letsStart => 'Let\'s start';
+
+  @override
+  String get languageLabel => 'Language';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageArabic => 'Arabic';
+
+  @override
+  String get themeLabel => 'Theme';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get getStarted => 'Get Started';
+
+  @override
+  String get onBoardingFastLocalBadge => 'Fast & Local';
+
+  @override
+  String get onBoardingFastLocalTitle => 'Instant Local File Sharing';
+
+  @override
+  String get onBoardingFastLocalDesc =>
+      'Share photos, videos, and documents directly to devices on your local Wi-Fi network at maximum speed.';
+
+  @override
+  String get onBoardingEncryptedBadge => 'Encrypted & Private';
+
+  @override
+  String get onBoardingEncryptedTitle => 'End-to-End Peer Security';
+
+  @override
+  String get onBoardingEncryptedDesc =>
+      'Your files remain completely private. Transfers are encrypted and transmitted directly without touching cloud servers.';
+
+  @override
+  String get onBoardingCrossPlatformBadge => 'Cross Platform';
+
+  @override
+  String get onBoardingCrossPlatformTitle => 'Universal Device Support';
+
+  @override
+  String get onBoardingCrossPlatformDesc =>
+      'Connect and share effortlessly across Android, iOS, Windows, macOS, and Linux without restrictions.';
 }

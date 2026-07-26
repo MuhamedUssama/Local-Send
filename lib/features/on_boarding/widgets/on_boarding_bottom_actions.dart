@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import '../../../core/l10n/app_localizations.dart';
 import 'on_boarding_indicator.dart';
 
 class OnBoardingBottomActions extends StatelessWidget {
@@ -19,24 +20,26 @@ class OnBoardingBottomActions extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
     final isLastPage = currentIndex == itemCount - 1;
 
     return FadeInUp(
       duration: const Duration(milliseconds: 500),
       child: Padding(
-        padding: const EdgeInsets.only(left: 28, right: 28, bottom: 36, top: 12),
+        padding: const EdgeInsets.only(
+          left: 28,
+          right: 28,
+          bottom: 36,
+          top: 12,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Page Indicator Dots
             OnBoardingIndicator(
               itemCount: itemCount,
               currentIndex: currentIndex,
             ),
-
             const SizedBox(height: 28),
-
-            // Action Button
             SizedBox(
               width: double.infinity,
               child: FilledButton(
@@ -44,14 +47,12 @@ class OnBoardingBottomActions extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      isLastPage ? 'Get Started' : 'Next',
-                    ),
+                    Text(isLastPage ? l10n.getStarted : l10n.next),
                     const SizedBox(width: 8),
                     Icon(
                       isLastPage
                           ? IconsaxPlusBold.send_2
-                          : IconsaxPlusLinear.arrow_right_3,
+                          : Icons.arrow_forward_ios_rounded,
                       size: 20,
                       color: colorScheme.onPrimary,
                     ),

@@ -463,6 +463,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow nearby mobile camera scan'**
   String get generateQrSubtitle;
+
+  /// No description provided for @personalizeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalize Your Experience'**
+  String get personalizeTitle;
+
+  /// No description provided for @personalizeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your preferred theme and language to get started with a comfortable, tailored experience that suits your style.'**
+  String get personalizeSubtitle;
+
+  /// No description provided for @letsStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s start'**
+  String get letsStart;
+
+  /// No description provided for @languageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageLabel;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
+
+  /// No description provided for @languageArabic.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic'**
+  String get languageArabic;
+
+  /// No description provided for @themeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get themeLabel;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @next.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get next;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
+
+  /// No description provided for @onBoardingFastLocalBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast & Local'**
+  String get onBoardingFastLocalBadge;
+
+  /// No description provided for @onBoardingFastLocalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Local File Sharing'**
+  String get onBoardingFastLocalTitle;
+
+  /// No description provided for @onBoardingFastLocalDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Share photos, videos, and documents directly to devices on your local Wi-Fi network at maximum speed.'**
+  String get onBoardingFastLocalDesc;
+
+  /// No description provided for @onBoardingEncryptedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted & Private'**
+  String get onBoardingEncryptedBadge;
+
+  /// No description provided for @onBoardingEncryptedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'End-to-End Peer Security'**
+  String get onBoardingEncryptedTitle;
+
+  /// No description provided for @onBoardingEncryptedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your files remain completely private. Transfers are encrypted and transmitted directly without touching cloud servers.'**
+  String get onBoardingEncryptedDesc;
+
+  /// No description provided for @onBoardingCrossPlatformBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Cross Platform'**
+  String get onBoardingCrossPlatformBadge;
+
+  /// No description provided for @onBoardingCrossPlatformTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Universal Device Support'**
+  String get onBoardingCrossPlatformTitle;
+
+  /// No description provided for @onBoardingCrossPlatformDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect and share effortlessly across Android, iOS, Windows, macOS, and Linux without restrictions.'**
+  String get onBoardingCrossPlatformDesc;
 }
 
 class _AppLocalizationsDelegate

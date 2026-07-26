@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import '../../../core/l10n/app_localizations.dart';
 import '../../../core/router/routes_name.dart';
 import '../models/on_boarding_item.dart';
 import '../widgets/on_boarding_bottom_actions.dart';
@@ -17,29 +18,28 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   late final PageController _pageController;
   int _currentIndex = 0;
 
-  final List<OnBoardingItem> _onBoardingItems = const [
-    OnBoardingItem(
-      icon: IconsaxPlusBold.wifi,
-      badgeText: 'Fast & Local',
-      title: 'Instant Local File Sharing',
-      description:
-          'Share photos, videos, and documents directly to devices on your local Wi-Fi network at maximum speed.',
-    ),
-    OnBoardingItem(
-      icon: IconsaxPlusBold.shield_security,
-      badgeText: 'Encrypted & Private',
-      title: 'End-to-End Peer Security',
-      description:
-          'Your files remain completely private. Transfers are encrypted and transmitted directly without touching cloud servers.',
-    ),
-    OnBoardingItem(
-      icon: IconsaxPlusBold.devices,
-      badgeText: 'Cross Platform',
-      title: 'Universal Device Support',
-      description:
-          'Connect and share effortlessly across Android, iOS, Windows, macOS, and Linux without restrictions.',
-    ),
-  ];
+  List<OnBoardingItem> _getOnBoardingItems(AppLocalizations l10n) {
+    return [
+      OnBoardingItem(
+        icon: IconsaxPlusBold.wifi,
+        badgeText: l10n.onBoardingFastLocalBadge,
+        title: l10n.onBoardingFastLocalTitle,
+        description: l10n.onBoardingFastLocalDesc,
+      ),
+      OnBoardingItem(
+        icon: IconsaxPlusBold.shield_security,
+        badgeText: l10n.onBoardingEncryptedBadge,
+        title: l10n.onBoardingEncryptedTitle,
+        description: l10n.onBoardingEncryptedDesc,
+      ),
+      OnBoardingItem(
+        icon: IconsaxPlusBold.devices,
+        badgeText: l10n.onBoardingCrossPlatformBadge,
+        title: l10n.onBoardingCrossPlatformTitle,
+        description: l10n.onBoardingCrossPlatformDesc,
+      ),
+    ];
+  }
 
   @override
   void initState() {
@@ -57,8 +57,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     Navigator.pushReplacementNamed(context, RoutesName.home);
   }
 
-  void _onNext() {
-    if (_currentIndex < _onBoardingItems.length - 1) {
+  void _onNext(int itemCount) {
+    if (_currentIndex < itemCount - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOutCubic,
@@ -71,6 +71,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final items = _getOnBoardingItems(l10n);
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
@@ -86,7 +88,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: _onBoardingItems.length,
+                itemCount: items.length,
                 onPageChanged: (index) {
                   setState(() {
                     _currentIndex = index;
@@ -94,7 +96,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 },
                 itemBuilder: (context, index) {
                   return OnBoardingPageWidget(
-                    item: _onBoardingItems[index],
+                    item: items[index],
                   );
                 },
               ),
@@ -102,9 +104,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
             // Bottom Actions (Indicators & Next/Start Button)
             OnBoardingBottomActions(
-              itemCount: _onBoardingItems.length,
+              itemCount: items.length,
               currentIndex: _currentIndex,
-              onNext: _onNext,
+              onNext: () => _onNext(items.length),
             ),
           ],
         ),
