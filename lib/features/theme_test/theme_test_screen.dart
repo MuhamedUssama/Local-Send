@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax_plus/iconsax_plus.dart';
+import '../../core/l10n/app_localizations.dart';
 import '../../core/theme/app_colors.dart';
 
 class ThemeTestScreen extends StatefulWidget {
   final VoidCallback onToggleTheme;
   final bool isDarkMode;
+  final VoidCallback onToggleLanguage;
+  final Locale currentLocale;
 
   const ThemeTestScreen({
     super.key,
     required this.onToggleTheme,
     required this.isDarkMode,
+    required this.onToggleLanguage,
+    required this.currentLocale,
   });
 
   @override
@@ -35,6 +40,8 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final l10n = AppLocalizations.of(context)!;
+    final isArabic = widget.currentLocale.languageCode == 'ar';
 
     return Scaffold(
       appBar: AppBar(
@@ -52,11 +59,47 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                 size: 20,
               ),
             ),
-            const SizedBox(width: 12),
-            const Text('LocalSend UI Showcase'),
+            Expanded(
+              child: Text(l10n.appTitle, overflow: TextOverflow.ellipsis),
+            ),
           ],
         ),
         actions: [
+          // Language Switcher Button
+          InkWell(
+            onTap: widget.onToggleLanguage,
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: AppColors.primary.withValues(alpha: 0.3),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    IconsaxPlusLinear.global,
+                    size: 16,
+                    color: AppColors.primary,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    isArabic ? 'English' : 'عربي',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: 4),
           IconButton(
             onPressed: widget.onToggleTheme,
             icon: Icon(
@@ -68,8 +111,8 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                   : AppColors.primary,
             ),
             tooltip: widget.isDarkMode
-                ? 'Switch to Light Mode'
-                : 'Switch to Dark Mode',
+                ? l10n.switchToLightMode
+                : l10n.switchToDarkMode,
           ),
           const SizedBox(width: 8),
         ],
@@ -114,18 +157,18 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                         color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             IconsaxPlusLinear.wifi,
                             color: Colors.white,
                             size: 16,
                           ),
-                          SizedBox(width: 6),
+                          const SizedBox(width: 6),
                           Text(
-                            'mDNS Active',
-                            style: TextStyle(
+                            l10n.mdnsActive,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -141,9 +184,9 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'LocalSend Futuristic Theme',
-                  style: TextStyle(
+                Text(
+                  l10n.heroTitle,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 24,
                     fontWeight: FontWeight.w800,
@@ -152,7 +195,7 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'High-speed chunked streaming • Plus Jakarta Sans Typography',
+                  l10n.heroSubtitle,
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.85),
                     fontSize: 13,
@@ -169,7 +212,7 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
           // -------------------------------------------------------------------
           _buildSectionHeader(
             context,
-            'Typography (Google Fonts)',
+            l10n.typographyHeader,
             IconsaxPlusLinear.text,
           ),
           const SizedBox(height: 12),
@@ -179,29 +222,23 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Display Medium', style: textTheme.displayMedium),
-                  const SizedBox(height: 4),
-                  Text('Headline Large', style: textTheme.headlineLarge),
-                  const SizedBox(height: 4),
                   Text(
-                    'Title Large (File Name.pdf)',
-                    style: textTheme.titleLarge,
+                    l10n.displayMediumSample,
+                    style: textTheme.displayMedium,
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Body Large - Seamless transfer across local devices.',
-                    style: textTheme.bodyLarge,
+                    l10n.headlineLargeSample,
+                    style: textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    'Body Medium - 124 MB of 500 MB (45.2 MB/s)',
-                    style: textTheme.bodyMedium,
-                  ),
+                  Text(l10n.titleLargeSample, style: textTheme.titleLarge),
                   const SizedBox(height: 4),
-                  Text(
-                    'Body Small - 192.168.1.105:53317',
-                    style: textTheme.bodySmall,
-                  ),
+                  Text(l10n.bodyLargeSample, style: textTheme.bodyLarge),
+                  const SizedBox(height: 4),
+                  Text(l10n.bodyMediumSample, style: textTheme.bodyMedium),
+                  const SizedBox(height: 4),
+                  Text(l10n.bodySmallSample, style: textTheme.bodySmall),
                 ],
               ),
             ),
@@ -213,7 +250,7 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
           // -------------------------------------------------------------------
           _buildSectionHeader(
             context,
-            'Buttons & Actions',
+            l10n.buttonsHeader,
             IconsaxPlusLinear.element_3,
           ),
           const SizedBox(height: 12),
@@ -225,25 +262,25 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                   ElevatedButton.icon(
                     onPressed: () {},
                     icon: const Icon(IconsaxPlusLinear.send_2, size: 18),
-                    label: const Text('Send Files'),
+                    label: Text(l10n.sendFiles),
                   ),
                   const SizedBox(height: 12),
                   FilledButton.icon(
                     onPressed: () {},
                     icon: const Icon(IconsaxPlusLinear.import, size: 18),
-                    label: const Text('Receive'),
+                    label: Text(l10n.receive),
                   ),
                   const SizedBox(height: 12),
                   OutlinedButton.icon(
                     onPressed: () {},
                     icon: const Icon(IconsaxPlusLinear.radar_2, size: 18),
-                    label: const Text('Scan Devices'),
+                    label: Text(l10n.scanDevices),
                   ),
                   const SizedBox(height: 12),
                   TextButton.icon(
                     onPressed: () {},
                     icon: const Icon(IconsaxPlusLinear.clock, size: 18),
-                    label: const Text('View History'),
+                    label: Text(l10n.viewHistory),
                   ),
                 ],
               ),
@@ -256,7 +293,7 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
           // -------------------------------------------------------------------
           _buildSectionHeader(
             context,
-            'Device Tiles & Status Badges',
+            l10n.devicesHeader,
             IconsaxPlusLinear.devices,
           ),
           const SizedBox(height: 12),
@@ -275,8 +312,8 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                       color: AppColors.secondary,
                     ),
                   ),
-                  title: const Text('Mohamed’s MacBook Pro'),
-                  subtitle: const Text('macOS • 192.168.1.42'),
+                  title: Text(l10n.macbookName),
+                  subtitle: Text(l10n.macbookSubtitle),
                   trailing: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
@@ -289,9 +326,9 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                         color: AppColors.mintGreen.withValues(alpha: 0.5),
                       ),
                     ),
-                    child: const Text(
-                      'Ready',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.statusReady,
+                      style: const TextStyle(
                         color: AppColors.mintGreen,
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -312,8 +349,8 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                       color: AppColors.secondary,
                     ),
                   ),
-                  title: const Text('iPhone 15 Pro Max'),
-                  subtitle: const Text('iOS • 192.168.1.88'),
+                  title: Text(l10n.iphoneName),
+                  subtitle: Text(l10n.iphoneSubtitle),
                   trailing: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
@@ -326,9 +363,9 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                         color: AppColors.coralPulse.withValues(alpha: 0.5),
                       ),
                     ),
-                    child: const Text(
-                      'Sending 82%',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.statusSending,
+                      style: const TextStyle(
                         color: AppColors.coralPulse,
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -346,7 +383,7 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
           // -------------------------------------------------------------------
           _buildSectionHeader(
             context,
-            'Real-Time Streaming & Speed',
+            l10n.streamingHeader,
             IconsaxPlusLinear.flash_1,
           ),
           const SizedBox(height: 12),
@@ -359,13 +396,17 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Chunked Streaming Progress',
-                        style: textTheme.titleMedium,
+                      Expanded(
+                        child: Text(
+                          l10n.chunkedProgressTitle,
+                          style: textTheme.titleMedium,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      const Text(
-                        '78.4 MB / 100 MB',
-                        style: TextStyle(
+                      const SizedBox(width: 8),
+                      Text(
+                        l10n.progressSample,
+                        style: const TextStyle(
                           color: AppColors.secondary,
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
@@ -390,10 +431,13 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                         child: CircularProgressIndicator(strokeWidth: 3),
                       ),
                       const SizedBox(width: 14),
-                      Text('Transfer Speed: ', style: textTheme.bodyMedium),
-                      const Text(
-                        '54.2 MB/s',
-                        style: TextStyle(
+                      Text(
+                        l10n.transferSpeedLabel,
+                        style: textTheme.bodyMedium,
+                      ),
+                      Text(
+                        l10n.speedSample,
+                        style: const TextStyle(
                           color: AppColors.mintGreen,
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
@@ -412,7 +456,7 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
           // -------------------------------------------------------------------
           _buildSectionHeader(
             context,
-            'Inputs & Interactive Controls',
+            l10n.controlsHeader,
             IconsaxPlusLinear.setting_4,
           ),
           const SizedBox(height: 12),
@@ -424,31 +468,29 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                 children: [
                   TextField(
                     controller: _textController,
-                    decoration: const InputDecoration(
-                      labelText: 'File Rename / Save Path',
-                      hintText: 'Enter file name',
-                      prefixIcon: Icon(IconsaxPlusLinear.document_text),
+                    decoration: InputDecoration(
+                      labelText: l10n.fileRenameLabel,
+                      hintText: l10n.fileRenameHint,
+                      prefixIcon: const Icon(IconsaxPlusLinear.document_text),
                     ),
                   ),
                   const SizedBox(height: 16),
                   SwitchListTile(
-                    title: const Text('Auto-Accept Transfer Requests'),
-                    subtitle: const Text(
-                      'Allow known devices to send without prompt',
-                    ),
+                    title: Text(l10n.autoAcceptTitle),
+                    subtitle: Text(l10n.autoAcceptSubtitle),
                     value: _switchVal,
                     onChanged: (val) => setState(() => _switchVal = val),
                   ),
                   CheckboxListTile(
-                    title: const Text('Quick QR Code Mode'),
-                    subtitle: const Text('Display QR code on discovery start'),
+                    title: Text(l10n.quickQrTitle),
+                    subtitle: Text(l10n.quickQrSubtitle),
                     value: _checkboxVal,
                     onChanged: (val) =>
                         setState(() => _checkboxVal = val ?? false),
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'Bandwidth Limit Rate (${_sliderVal.toInt()} MB/s)',
+                    l10n.bandwidthLimitTitle(_sliderVal.toInt().toString()),
                     style: textTheme.titleMedium,
                   ),
                   Slider(
@@ -468,11 +510,7 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
           // -------------------------------------------------------------------
           // 🏷️ CHIPS & BADGES
           // -------------------------------------------------------------------
-          _buildSectionHeader(
-            context,
-            'Tags & Category Chips',
-            IconsaxPlusLinear.tag,
-          ),
+          _buildSectionHeader(context, l10n.chipsHeader, IconsaxPlusLinear.tag),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
@@ -480,20 +518,20 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
             children: [
               Chip(
                 avatar: const Icon(IconsaxPlusLinear.archive, size: 16),
-                label: const Text('Archive (.zip)'),
+                label: Text(l10n.archiveChip),
                 backgroundColor: AppColors.primary.withValues(alpha: 0.12),
               ),
               Chip(
                 avatar: const Icon(IconsaxPlusLinear.gallery, size: 16),
-                label: const Text('Photos (42)'),
+                label: Text(l10n.photosChip),
                 backgroundColor: AppColors.secondary.withValues(alpha: 0.12),
               ),
               Chip(
                 avatar: const Icon(IconsaxPlusLinear.video_play, size: 16),
-                label: const Text('Video (1.4 GB)'),
+                label: Text(l10n.videoChip),
                 backgroundColor: AppColors.secondary.withValues(alpha: 0.12),
               ),
-              ActionChip(label: const Text('+ Add Category'), onPressed: () {}),
+              ActionChip(label: Text(l10n.addCategoryChip), onPressed: () {}),
             ],
           ),
           const SizedBox(height: 28),
@@ -503,22 +541,22 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
           // -------------------------------------------------------------------
           _buildSectionHeader(
             context,
-            'Dialogs & Bottom Sheets',
+            l10n.modalsHeader,
             IconsaxPlusLinear.maximize_3,
           ),
           const SizedBox(height: 12),
           Column(
             children: [
               OutlinedButton.icon(
-                onPressed: () => _showTestDialog(context),
+                onPressed: () => _showTestDialog(context, l10n),
                 icon: const Icon(IconsaxPlusLinear.export_1),
-                label: const Text('Open Dialog'),
+                label: Text(l10n.openDialog),
               ),
               const SizedBox(height: 12),
               FilledButton.icon(
-                onPressed: () => _showTestBottomSheet(context),
+                onPressed: () => _showTestBottomSheet(context, l10n),
                 icon: const Icon(IconsaxPlusLinear.arrow_up_3),
-                label: const Text('Bottom Sheet'),
+                label: Text(l10n.bottomSheet),
               ),
             ],
           ),
@@ -528,48 +566,48 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     IconsaxPlusBold.tick_circle,
                     color: AppColors.mintGreen,
                     size: 20,
                   ),
-                  SizedBox(width: 10),
-                  Text('LocalSend theme verified successfully! 🚀'),
+                  const SizedBox(width: 10),
+                  Text(l10n.snackBarSuccess),
                 ],
               ),
             ),
           );
         },
         icon: const Icon(IconsaxPlusBold.magicpen),
-        label: const Text('Test SnackBar'),
+        label: Text(l10n.testSnackbar),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentNavIndex,
         onDestinationSelected: (index) =>
             setState(() => _currentNavIndex = index),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(IconsaxPlusLinear.send_2),
-            selectedIcon: Icon(IconsaxPlusBold.send_2),
-            label: 'Send',
+            icon: const Icon(IconsaxPlusLinear.send_2),
+            selectedIcon: const Icon(IconsaxPlusBold.send_2),
+            label: l10n.navSend,
           ),
           NavigationDestination(
-            icon: Icon(IconsaxPlusLinear.import),
-            selectedIcon: Icon(IconsaxPlusBold.import),
-            label: 'Receive',
+            icon: const Icon(IconsaxPlusLinear.import),
+            selectedIcon: const Icon(IconsaxPlusBold.import),
+            label: l10n.navReceive,
           ),
           NavigationDestination(
-            icon: Icon(IconsaxPlusLinear.clock),
-            selectedIcon: Icon(IconsaxPlusBold.clock),
-            label: 'History',
+            icon: const Icon(IconsaxPlusLinear.clock),
+            selectedIcon: const Icon(IconsaxPlusBold.clock),
+            label: l10n.navHistory,
           ),
           NavigationDestination(
-            icon: Icon(IconsaxPlusLinear.setting),
-            selectedIcon: Icon(IconsaxPlusBold.setting),
-            label: 'Settings',
+            icon: const Icon(IconsaxPlusLinear.setting),
+            selectedIcon: const Icon(IconsaxPlusBold.setting),
+            label: l10n.navSettings,
           ),
         ],
       ),
@@ -591,35 +629,36 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
     );
   }
 
-  void _showTestDialog(BuildContext context) {
+  void _showTestDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Row(
+        title: Row(
           children: [
-            Icon(IconsaxPlusBold.security_safe, color: AppColors.secondary),
-            SizedBox(width: 10),
-            Text('Incoming Connection'),
+            const Icon(
+              IconsaxPlusBold.security_safe,
+              color: AppColors.secondary,
+            ),
+            const SizedBox(width: 10),
+            Text(l10n.incomingConnectionTitle),
           ],
         ),
-        content: const Text(
-          'MacBook Pro wants to send "presentation_final.pdf" (24.5 MB). Do you accept this transfer?',
-        ),
+        content: Text(l10n.incomingConnectionContent),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Decline'),
+            child: Text(l10n.decline),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Accept & Save'),
+            child: Text(l10n.acceptAndSave),
           ),
         ],
       ),
     );
   }
 
-  void _showTestBottomSheet(BuildContext context) {
+  void _showTestBottomSheet(BuildContext context, AppLocalizations l10n) {
     showModalBottomSheet(
       context: context,
       builder: (ctx) => Padding(
@@ -628,9 +667,9 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Quick Transfer Options',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            Text(
+              l10n.quickTransferOptionsTitle,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
             ),
             const SizedBox(height: 16),
             ListTile(
@@ -638,8 +677,8 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                 IconsaxPlusLinear.document_copy,
                 color: AppColors.primary,
               ),
-              title: const Text('Share Clipboard Text'),
-              subtitle: const Text('Send copied link or text instantly'),
+              title: Text(l10n.shareClipboardTitle),
+              subtitle: Text(l10n.shareClipboardSubtitle),
               onTap: () => Navigator.pop(ctx),
             ),
             ListTile(
@@ -647,8 +686,8 @@ class _ThemeTestScreenState extends State<ThemeTestScreen> {
                 IconsaxPlusLinear.scan_barcode,
                 color: AppColors.secondary,
               ),
-              title: const Text('Generate QR Code'),
-              subtitle: const Text('Allow nearby mobile camera scan'),
+              title: Text(l10n.generateQrTitle),
+              subtitle: Text(l10n.generateQrSubtitle),
               onTap: () => Navigator.pop(ctx),
             ),
           ],

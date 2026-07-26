@@ -351,8 +351,9 @@ abstract class AppTheme {
       // Controls (Switch, Checkbox, Radio)
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.selected))
+          if (states.contains(WidgetState.selected)) {
             return isDark ? Colors.black : Colors.white;
+          }
           return textMuted;
         }),
         trackColor: WidgetStateProperty.resolveWith((states) {
