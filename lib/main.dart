@@ -1,39 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:local_send/core/services/shared_preferences_services.dart';
 import 'core/l10n/app_localizations.dart';
+import 'core/router/app_router.dart';
+import 'core/router/routes_name.dart';
 import 'core/theme/app_theme.dart';
-import 'features/theme_test/theme_test_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesServices.init();
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.dark;
-  Locale _locale = const Locale('en');
-
-  void _toggleTheme() {
-    setState(() {
-      _themeMode = _themeMode == ThemeMode.dark
-          ? ThemeMode.light
-          : ThemeMode.dark;
-    });
-  }
-
-  void _toggleLanguage() {
-    setState(() {
-      _locale = _locale.languageCode == 'en'
-          ? const Locale('ar')
-          : const Locale('en');
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +22,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: _themeMode,
-      locale: _locale,
+      themeMode: ThemeMode.system,
+      locale: const Locale('en'),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -51,12 +31,8 @@ class _MyAppState extends State<MyApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en'), Locale('ar')],
-      home: ThemeTestScreen(
-        onToggleTheme: _toggleTheme,
-        isDarkMode: _themeMode == ThemeMode.dark,
-        onToggleLanguage: _toggleLanguage,
-        currentLocale: _locale,
-      ),
+      initialRoute: RoutesName.splash,
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
