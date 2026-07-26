@@ -23,6 +23,7 @@ dependencies:
   json_annotation:
   freezed: 
   freezed_annotation: 
+  animate_do:
 
 dev_dependencies:
   flutter_test:

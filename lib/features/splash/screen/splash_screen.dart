@@ -55,12 +55,12 @@ class _SplashScreenState extends State<SplashScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!isDesktopPlatform) {
         // Non-desktop platforms (Android/iOS/Web) skip splash screen immediately
-        Navigator.pushReplacementNamed(context, RoutesName.home);
+        Navigator.pushReplacementNamed(context, RoutesName.appConfig);
       } else {
         // Desktop platforms (macOS / Windows) show splash screen for 2.5 seconds
         Future.delayed(const Duration(milliseconds: 2500), () {
           if (mounted) {
-            Navigator.pushReplacementNamed(context, RoutesName.home);
+            Navigator.pushReplacementNamed(context, RoutesName.appConfig);
           }
         });
       }

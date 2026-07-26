@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../features/app_config/screens/app_config_screen.dart';
+import '../../features/on_boarding/screens/on_boarding_screen.dart';
 import '../../features/splash/screen/splash_screen.dart';
 import '../../features/theme_test/theme_test_screen.dart';
 import 'routes_name.dart';
@@ -8,6 +10,10 @@ abstract class AppRouter {
     switch (settings.name) {
       case RoutesName.splash:
         return _buildFadeRoute(const SplashScreen(), settings);
+      case RoutesName.appConfig:
+        return _buildFadeScaleRoute(const AppConfigScreen(), settings);
+      case RoutesName.onBoarding:
+        return _buildFadeScaleRoute(const OnBoardingScreen(), settings);
       case RoutesName.themeTest:
       case RoutesName.home:
         return _buildFadeScaleRoute(
