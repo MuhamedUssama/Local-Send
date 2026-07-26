@@ -195,4 +195,65 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get generateQrSubtitle => 'السماح بالمسح عبر كاميرا الهاتف القريب';
+
+  @override
+  String get personalizeTitle => 'خصص تجربتك';
+
+  @override
+  String get personalizeSubtitle =>
+      'اختر المظهر واللغة المفضلين لديك للبدء بتجربة مريحة ومخصصة تناسب أسلوبك.';
+
+  @override
+  String get letsStart => 'هيا نبدأ';
+
+  @override
+  String get languageLabel => 'اللغة';
+
+  @override
+  String get languageEnglish => 'الإنجليزية';
+
+  @override
+  String get languageArabic => 'العربية';
+
+  @override
+  String get themeLabel => 'المظهر';
+
+  @override
+  String get skip => 'تخطي';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get getStarted => 'ابدأ الآن';
+
+  @override
+  String get onBoardingFastLocalBadge => 'سريع ومحلي';
+
+  @override
+  String get onBoardingFastLocalTitle => 'مشاركة ملفات محلية فورية';
+
+  @override
+  String get onBoardingFastLocalDesc =>
+      'شارك الصور والفيديوهات والمستندات مباشرة مع الأجهزة على شبكتك المحلية بأقصى سرعة.';
+
+  @override
+  String get onBoardingEncryptedBadge => 'مشفر وخاص';
+
+  @override
+  String get onBoardingEncryptedTitle => 'أمان مباشر وشامل';
+
+  @override
+  String get onBoardingEncryptedDesc =>
+      'تبقى ملفاتك خاصة تماماً. يتم تشفير عمليات النقل وإرسالها مباشرة دون المرور بأي خوادم سحابية.';
+
+  @override
+  String get onBoardingCrossPlatformBadge => 'متعدد المنصات';
+
+  @override
+  String get onBoardingCrossPlatformTitle => 'دعم شامل لجميع الأجهزة';
+
+  @override
+  String get onBoardingCrossPlatformDesc =>
+      'تواصل وشارك بسهولة عبر آندرويد، آيفون، ويندوز، ماك، ولينكس دون أي قيود.';
 }
