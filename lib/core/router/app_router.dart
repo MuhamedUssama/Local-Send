@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:local_send/features/main_layout/screen/main_layout_screen.dart';
 import '../../features/app_config/screens/app_config_screen.dart';
 import '../../features/on_boarding/screens/on_boarding_screen.dart';
 import '../../features/splash/screen/splash_screen.dart';
@@ -15,7 +16,6 @@ abstract class AppRouter {
       case RoutesName.onBoarding:
         return _buildFadeScaleRoute(const OnBoardingScreen(), settings);
       case RoutesName.themeTest:
-      case RoutesName.home:
         return _buildFadeScaleRoute(
           ThemeTestScreen(
             onToggleTheme: () {},
@@ -25,12 +25,12 @@ abstract class AppRouter {
           ),
           settings,
         );
+      case RoutesName.mainlayout:
+        return _buildFadeScaleRoute(const MainLayoutScreen(), settings);
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
-            body: Center(
-              child: Text('No route defined for ${settings.name}'),
-            ),
+            body: Center(child: Text('No route defined for ${settings.name}')),
           ),
         );
     }
@@ -43,10 +43,7 @@ abstract class AppRouter {
       pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(
-          opacity: CurvedAnimation(
-            parent: animation,
-            curve: Curves.easeIn,
-          ),
+          opacity: CurvedAnimation(parent: animation, curve: Curves.easeIn),
           child: child,
         );
       },

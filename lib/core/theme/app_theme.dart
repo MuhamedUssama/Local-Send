@@ -285,6 +285,28 @@ abstract class AppTheme {
         }),
       ),
 
+      // Navigation Rail (Desktop & Tablet)
+      navigationRailTheme: NavigationRailThemeData(
+        backgroundColor: surfaceColor,
+        elevation: 0,
+        indicatorColor: (isDark ? AppColors.primaryLight : AppColors.primary)
+            .withValues(alpha: 0.15),
+        labelType: NavigationRailLabelType.all,
+        selectedIconTheme: IconThemeData(color: accentSecondary),
+        unselectedIconTheme: IconThemeData(color: textSecondary),
+        selectedLabelTextStyle: GoogleFonts.plusJakartaSans(
+          color: accentSecondary,
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+        ),
+        unselectedLabelTextStyle: GoogleFonts.plusJakartaSans(
+          color: textSecondary,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+        groupAlignment: -0.9,
+      ),
+
       // ListTile
       listTileTheme: ListTileThemeData(
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),

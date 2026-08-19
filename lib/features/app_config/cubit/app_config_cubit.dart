@@ -63,9 +63,7 @@ class AppConfigCubit extends Cubit<AppConfigStates> {
     final cachedLocale = SharedPreferencesServices.getString(
       key: AppConstants.localeKey,
     );
-    if (cachedLocale.isNotEmpty) {
-      return Locale(cachedLocale);
-    }
-    return const Locale('en');
+
+    return cachedLocale.isNotEmpty ? Locale(cachedLocale) : const Locale('en');
   }
 }
