@@ -3,5 +3,5 @@ abstract class RoutesName {
   static const String appConfig = '/app-config';
   static const String onBoarding = '/on-boarding';
   static const String themeTest = '/theme-test';
-  static const String home = '/home';
+  static const String mainlayout = '/main-layout';
 }

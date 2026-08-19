@@ -54,7 +54,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   void _navigateToHome() {
-    Navigator.pushReplacementNamed(context, RoutesName.home);
+    Navigator.pushReplacementNamed(context, RoutesName.mainlayout);
   }
 
   void _onNext(int itemCount) {
@@ -80,9 +80,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         child: Column(
           children: [
             // Top Header (Logo & Skip)
-            OnBoardingHeader(
-              onSkip: _navigateToHome,
-            ),
+            OnBoardingHeader(onSkip: _navigateToHome),
 
             // Page View Content
             Expanded(
@@ -95,9 +93,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   });
                 },
                 itemBuilder: (context, index) {
-                  return OnBoardingPageWidget(
-                    item: items[index],
-                  );
+                  return OnBoardingPageWidget(item: items[index]);
                 },
               ),
             ),
