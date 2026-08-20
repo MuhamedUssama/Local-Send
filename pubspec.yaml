@@ -24,6 +24,7 @@ dependencies:
   freezed: 
   freezed_annotation: 
   animate_do:
+  network_info_plus:
 
 dev_dependencies:
   flutter_test:
