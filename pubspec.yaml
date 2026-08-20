@@ -25,6 +25,12 @@ dependencies:
   freezed_annotation: 
   animate_do:
   network_info_plus:
+  storage_utility:
+    git:
+      url: https://github.com/MuhamedUssama/App-StorageUtility.git
+      ref: feat/send-target-path
+      path: storage_utility
+  path:
 
 dev_dependencies:
   flutter_test:
