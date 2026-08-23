@@ -31,6 +31,7 @@ dependencies:
       ref: feat/send-target-path
       path: storage_utility
   path:
+  bonsoir:
 
 dev_dependencies:
   flutter_test:

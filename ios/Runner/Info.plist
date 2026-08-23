@@ -63,8 +63,13 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>LocalSend requires access to your local network to discover and transfer files between nearby devices.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_localsend._tcp</string>
 	</array>
 </dict>
 </plist>
