@@ -53,6 +53,7 @@ abstract interface class ReceiveStorageDatasource {
 class ReceiveStorageDatasourceImpl implements ReceiveStorageDatasource {
   final Map<String, IOSink> _activeSinks = {};
   final Map<String, String> _activeFilePaths = {};
+  final Map<String, Object> _sinkErrors = {};
 
   @override
   Future<bool> hasEnoughStorageSpace({
@@ -91,6 +92,12 @@ class ReceiveStorageDatasourceImpl implements ReceiveStorageDatasource {
     final IOSink sink = File(fullFilePath).openWrite(mode: FileMode.writeOnly);
 
     final String sinkKey = _getSinkKey(sessionId, fileId);
+
+    sink.done.catchError((error) {
+      log('Disk write error on sink $sinkKey: $error');
+      _sinkErrors[sinkKey] = error;
+    });
+
     _activeSinks[sinkKey] = sink;
     _activeFilePaths[sinkKey] = fullFilePath;
 
@@ -104,6 +111,13 @@ class ReceiveStorageDatasourceImpl implements ReceiveStorageDatasource {
     required List<int> bytes,
   }) async {
     final String sinkKey = _getSinkKey(sessionId, fileId);
+
+    if (_sinkErrors.containsKey(sinkKey)) {
+      throw FileSystemException(
+        'Failed to write chunk due to earlier disk error: ${_sinkErrors[sinkKey]}',
+      );
+    }
+
     final IOSink? sink = _activeSinks[sinkKey];
 
     if (sink == null) {
@@ -122,19 +136,22 @@ class ReceiveStorageDatasourceImpl implements ReceiveStorageDatasource {
     required String fileId,
   }) async {
     final String sinkKey = _getSinkKey(sessionId, fileId);
-    final IOSink? sink = _activeSinks[sinkKey];
+    final IOSink? sink = _activeSinks.remove(sinkKey);
+    _activeFilePaths.remove(sinkKey);
+    final diskError = _sinkErrors.remove(sinkKey);
 
     if (sink == null) {
-      log('No active sink found for key $sinkKey');
-      throw StateError(
-        'Cannot finalize file: No active sink for session $sessionId and file $fileId',
-      );
+      throw StateError('Cannot finalize file: No active sink for key $sinkKey');
     }
-    _activeSinks.remove(sinkKey);
-    _activeFilePaths.remove(sinkKey);
+
+    if (diskError != null) {
+      await sink.close();
+      throw FileSystemException('File transfer failed on disk: $diskError');
+    }
 
     await sink.flush();
     await sink.close();
+    await sink.done;
   }
 
   @override

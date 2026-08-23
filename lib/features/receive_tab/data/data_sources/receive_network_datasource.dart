@@ -42,6 +42,9 @@ abstract interface class ReceiveNetworkDatasource {
 
 @LazySingleton(as: ReceiveNetworkDatasource)
 class ReceiveNetworkDatasourceImpl implements ReceiveNetworkDatasource {
+  static const int _maxHandshakeSize = 64 * 1024;
+  static const Duration _handshakeTimeout = Duration(seconds: 10);
+
   ServerSocket? _serverSocket;
 
   StreamController<ReceiveRequestModel> _incomingRequestsController =
@@ -124,7 +127,8 @@ class ReceiveNetworkDatasourceImpl implements ReceiveNetworkDatasource {
       final String jsonString = jsonEncode(response.toMap());
       final Uint8List jsonBytes = utf8.encode(jsonString);
 
-      final ByteData lengthData = ByteData(4)..setUint32(0, jsonBytes.length);
+      final ByteData lengthData = ByteData(4)
+        ..setUint32(0, jsonBytes.length, Endian.big);
       final Uint8List headerBytes = lengthData.buffer.asUint8List();
 
       socket.add(headerBytes);
@@ -206,6 +210,13 @@ class ReceiveNetworkDatasourceImpl implements ReceiveNetworkDatasource {
 
     late final StreamSubscription<Uint8List> subscription;
 
+    final Timer handshakeTimer = Timer(_handshakeTimeout, () {
+      if (!isHandshakeDone) {
+        log('Handshake timed out for incoming connection');
+        socket.destroy();
+      }
+    });
+
     subscription = socket.listen(
       (Uint8List chunks) {
         buffer.add(chunks);
@@ -218,7 +229,16 @@ class ReceiveNetworkDatasourceImpl implements ReceiveNetworkDatasource {
             final ByteData byteData = ByteData.sublistView(allCurrentBytes);
 
             // Read first 4 bytes as an integer
-            expectedLength = byteData.getUint32(0);
+            expectedLength = byteData.getUint32(0, Endian.big);
+
+            if (expectedLength! > _maxHandshakeSize) {
+              log(
+                'Handshake length exceeds max allowable size: $expectedLength',
+              );
+              handshakeTimer.cancel();
+              socket.destroy();
+              return;
+            }
 
             if (allCurrentBytes.length > 4) {
               buffer.add(allCurrentBytes.sublist(4));
@@ -239,17 +259,23 @@ class ReceiveNetworkDatasourceImpl implements ReceiveNetworkDatasource {
             // Save socket in Map by sessionId
             _activeSockets[requestModel.sessionId] = socket;
 
-            _bytesControllers.putIfAbsent(
-              currentSessionId!,
-              () => StreamController<List<int>>.broadcast(
-                onListen: () {
-                  if (subscription.isPaused) subscription.resume();
-                },
-                onCancel: () {
-                  if (!subscription.isPaused) subscription.pause();
-                },
-              ),
+            _bytesControllers[currentSessionId!] = StreamController<List<int>>(
+              onListen: () {
+                if (subscription.isPaused) subscription.resume();
+              },
+              onPause: () {
+                if (!subscription.isPaused) subscription.pause();
+              },
+              onResume: () {
+                if (subscription.isPaused) subscription.resume();
+              },
+              onCancel: () {
+                if (!subscription.isPaused) subscription.pause();
+              },
             );
+
+            handshakeTimer.cancel();
+            isHandshakeDone = true;
 
             // Send model to Stream controller
             _incomingRequestsController.add(requestModel);
